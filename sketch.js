@@ -1,6 +1,7 @@
 var database;
 var line1 = [];
-var allPoints;
+var allPoints = [];
+
 
 function setup(){
     database = firebase.database();
@@ -18,6 +19,8 @@ function draw(){
         y: mouseY
       }
       line1.push(point);
+      allPoints.push(line1);
+      console.log(allPoints);
     }
 
     beginShape();
@@ -28,26 +31,27 @@ function draw(){
         update(line1[i].x, line1[i].y);
       }
     endShape();
-    extractInfo();
+    // extractInfo();
    
     
 
   
 }
 
+
 function update(x,y){ 
 database.ref('/').set({
   x: x,
   y: y
-
+  
 })
 
-function extractInfo(){
-  point = data.val();
-  line1[i].x = point.x;
-  line1[i].y = point.y;
+// function extractInfo(){
+//   point = data.val();
+//   line1[i].x = point.x;
+//   line1[i].y = point.y;
     
-}
+// }
 
    
 
