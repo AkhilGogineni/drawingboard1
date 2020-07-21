@@ -1,18 +1,17 @@
 var database;
 var line1 = [];
 var allPoints = [];
-
+var dbpoins =[]
 
 function setup(){
     database = firebase.database();
     createCanvas(500,500);
-    this.line = null;
-    
-    
 }
 
 function draw(){
     background(0);
+
+    readData();
     if (mouseIsPressed){
       var point = {
         x: mouseX, 
@@ -21,38 +20,24 @@ function draw(){
       line1.push(point);
       allPoints.push(line1);
       console.log(allPoints);
+      var drawingRef = database.ref('drawing')
+    drawingRef.set({
+        "d": allPoints
+    })
     }
-
+    
     beginShape();
     stroke(255);
     noFill();
-    for(var i=0; i<this.line1.length; i++){     
-        vertex(line1[i].x, line1[i].y);
-        update(line1[i].x, line1[i].y);
+    for(var i=0; i<this.dbpoins.length; i++){     
+        vertex(dbpoins[i][i].x, dbpoins[i][i].y);
+        
+        endShape();
       }
-    endShape();
-    // extractInfo();
-   
-    
-
-  
 }
-
-
-function update(x,y){ 
-database.ref('/').set({
-  x: x,
-  y: y
-  
-})
-
-// function extractInfo(){
-//   point = data.val();
-//   line1[i].x = point.x;
-//   line1[i].y = point.y;
-    
-// }
-
-   
-
+function readData() {
+  database.ref('drawing/').on('value', (data) => {
+    console.log(data.val().d);
+    dbpoins = data.val().d
+  })
 }
